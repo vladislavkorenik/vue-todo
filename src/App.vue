@@ -1,17 +1,28 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <img alt="Vue logo" src="./assets/logo.png" />
+  <TodoList v-bind:todoList="todoList" />
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import TodoList from "@/components/TodoList";
 export default {
-  name: 'App',
+  name: "App",
+  data() {
+    return {
+      todoList: [],
+    };
+  },
+  mounted() {
+    fetch("https://jsonplaceholder.typicode.com/todos")
+      .then((response) => response.json())
+      .then((json) => {
+        this.todoList = json;
+      });
+  },
   components: {
-    HelloWorld
-  }
-}
+    TodoList,
+  },
+};
 </script>
 
 <style>

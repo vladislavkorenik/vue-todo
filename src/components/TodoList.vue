@@ -5,6 +5,8 @@
         v-for="todoItem of todoList"
         :key="todoItem.id"
         v-bind:todoItem="todoItem"
+        v-on:remove-item="removeTodoItem"
+        v-on:edit-item="editTodoItem"
       />
     </ul>
   </div>
@@ -16,6 +18,14 @@ export default {
   props: ["todoList"],
   components: {
     TodoItem,
+  },
+  methods: {
+    editTodoItem(id) {
+      this.$emit("edit-item", id);
+    },
+    removeTodoItem(id) {
+      this.$emit("remove-item", id);
+    },
   },
 };
 </script>

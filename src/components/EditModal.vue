@@ -41,11 +41,6 @@ export default {
 .errorInput {
   border: 2px solid crimson;
 }
-.buttons button {
-  border: 1px solid #2d6f52;
-  font-weight: bolder;
-  color: #35495e;
-}
 .submit-button {
   background: #41b883;
   margin-right: 10px;

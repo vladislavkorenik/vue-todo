@@ -53,9 +53,7 @@ span {
 .edit-button {
   margin: 0 10px;
   background: #41b883;
-  color: #35495e;
   padding: 2px 10px;
-  font-weight: bold;
 }
 .edit-button:hover {
   background: #113d2a;

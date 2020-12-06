@@ -1,6 +1,7 @@
 <template>
   <div>
-    <ul>
+    <h1 v-show="todoList.length === 0">List is empty</h1>
+    <ul v-show="todoList.length !== 0">
       <TodoItem
         v-for="todoItem of todoList"
         :key="todoItem.id"

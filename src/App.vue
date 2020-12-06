@@ -1,6 +1,7 @@
 <template>
   <div v-show="showModal" class="modal-background__div"></div>
   <img alt="Vue logo" src="./assets/logo.png" />
+  <AddItem @add-item="addItem" @search-item="searchItem" />
   <TodoList
     :todoList="todoList"
     @edit-item="editTodoItem"
@@ -17,6 +18,7 @@
 <script>
 import TodoList from "@/components/TodoList";
 import EditModal from "@/components/EditModal";
+import AddItem from "@/components/AddItem";
 
 export default {
   name: "App",
@@ -29,7 +31,7 @@ export default {
     };
   },
   mounted() {
-    fetch("https://jsonplaceholder.typicode.com/todos")
+    fetch("https://jsonplaceholder.typicode.com/todos?_limit=10")
       .then((response) => response.json())
       .then((json) => {
         this.todoList = json;
@@ -38,8 +40,18 @@ export default {
   components: {
     TodoList,
     EditModal,
+    AddItem,
   },
   methods: {
+    addItem(itemTitle) {
+      this.todoList = [
+        { completed: false, id: Math.random(), title: itemTitle },
+        ...this.todoList,
+      ];
+    },
+    searchItem(itemTitle) {
+      console.log(itemTitle, "search");
+    },
     setItemName(itemName) {
       this.todoList = this.todoList.map((todoItem) => {
         if (todoItem.id === this.editItemId) {
@@ -71,6 +83,8 @@ export default {
 button {
   border: none;
   outline: none;
+  color: #2c3e50;
+  font-weight: bolder;
 }
 button,
 input {

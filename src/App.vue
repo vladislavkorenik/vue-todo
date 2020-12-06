@@ -27,15 +27,18 @@ export default {
       showModal: false,
       currentItemName: "",
       editItemId: "",
-      todoList: [],
+      todoList: JSON.parse(localStorage.getItem("todoList")) || [],
     };
   },
   mounted() {
-    fetch("https://jsonplaceholder.typicode.com/todos?_limit=10")
-      .then((response) => response.json())
-      .then((json) => {
-        this.todoList = json;
-      });
+    if (!JSON.parse(localStorage.getItem("todoList"))?.length) {
+      fetch("https://jsonplaceholder.typicode.com/todos?_limit=10")
+        .then((response) => response.json())
+        .then((json) => {
+          localStorage.setItem("todoList", JSON.stringify(json));
+          this.todoList = json;
+        });
+    }
   },
   components: {
     TodoList,
@@ -44,21 +47,37 @@ export default {
   },
   methods: {
     addItem(itemTitle) {
-      this.todoList = [
+      let todoList = JSON.parse(localStorage.getItem("todoList"));
+
+      todoList = [
         { completed: false, id: Math.random(), title: itemTitle },
         ...this.todoList,
       ];
+
+      this.todoList = todoList;
+      localStorage.setItem("todoList", JSON.stringify(todoList));
     },
     searchItem(itemTitle) {
-      console.log(itemTitle, "search");
+      if (!itemTitle.trim()) {
+        this.todoList = JSON.parse(localStorage.getItem("todoList"));
+      } else {
+        this.todoList = this.todoList.filter(
+          (todoItem) => todoItem.title.indexOf(itemTitle.trim()) !== -1
+        );
+      }
     },
     setItemName(itemName) {
-      this.todoList = this.todoList.map((todoItem) => {
+      let todoList = JSON.parse(localStorage.getItem("todoList"));
+
+      todoList = todoList.map((todoItem) => {
         if (todoItem.id === this.editItemId) {
           todoItem.title = itemName;
         }
         return todoItem;
       });
+
+      this.todoList = todoList;
+      localStorage.setItem("todoList", JSON.stringify(todoList));
     },
     hideModal() {
       this.showModal = false;
@@ -73,7 +92,12 @@ export default {
       this.showModal = true;
     },
     removeTodoItem(id) {
-      this.todoList = this.todoList.filter((todoItem) => todoItem.id !== id);
+      let todoList = JSON.parse(localStorage.getItem("todoList"));
+
+      todoList = todoList.filter((todoItem) => todoItem.id !== id);
+
+      this.todoList = todoList;
+      localStorage.setItem("todoList", JSON.stringify(todoList));
     },
   },
 };

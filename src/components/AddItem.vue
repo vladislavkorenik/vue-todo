@@ -19,6 +19,9 @@ export default {
   },
   methods: {
     buttonHandler(actionName) {
+      if (!this.inputValue.trim() && actionName === "search-item") {
+        this.$emit("search-item", this.inputValue);
+      }
       if (this.inputValue.trim()) {
         actionName === "add-item"
           ? this.$emit("add-item", this.inputValue)

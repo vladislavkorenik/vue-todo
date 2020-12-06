@@ -1,9 +1,12 @@
 <template>
   <li>
     <span :class="{ done: checked }"
-      ><input type="checkbox" v-model="checked" :checked="checked" />{{
-        todoItem.title
-      }}</span
+      ><input
+        type="checkbox"
+        v-model="checked"
+        :checked="checked"
+        v-on:change="changeCompletedField(todoItem.id)"
+      />{{ todoItem.title }}</span
     >
     <div>
       <button class="edit-button" v-on:click="$emit('edit-item', todoItem.id)">
@@ -25,6 +28,21 @@ export default {
     todoItem: {
       type: Object,
       required: true,
+    },
+  },
+  methods: {
+    changeCompletedField(id) {
+      localStorage.setItem(
+        "todoList",
+        JSON.stringify(
+          JSON.parse(localStorage.getItem("todoList")).map((todoItem) => {
+            if (todoItem.id === id) {
+              todoItem.completed = this.checked;
+            }
+            return todoItem;
+          })
+        )
+      );
     },
   },
   data() {
